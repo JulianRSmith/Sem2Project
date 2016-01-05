@@ -5,12 +5,15 @@
 #include <iostream>
 #include <memory>
 
+using namespace std;
+
 #include <boost/program_options.hpp>
 
 #define RUN_GRAPHICS_DISPLAY 0x00;
 
 #include "common.h"
 #include "GameWorld.h"
+
 
 /*
  * SDL timers run in separate threads.  In the timer thread
@@ -35,7 +38,7 @@ struct SDLWindowDeleter {
 };
 
 void Draw(const std::shared_ptr<SDL_Window> window, const std::shared_ptr<GameWorld> game_world) {
-  glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+  glClearColor(0.000f, 1.000f, 1.000f, 0.1f);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
   game_world->Draw();
@@ -161,8 +164,33 @@ int main(int argc, char ** argv) {
       Draw(window, game_world);
 
       break;
+
+
+      // STUFF GOES HERE 
+    case SDL_KEYDOWN:
+      switch (event.key.keysym.sym) {
+      case SDLK_q:
+	SDL_Quit();
+	cout<<"Program Closing"<< endl;
+	break;
+      case SDLK_a:
+	cout<<"A (Left)  pressed"<< endl;
+	CubeAsset(-10, 0);
+	break;
+      case SDLK_d:
+	cout<<"D (Right)  pressed"<< endl;
+	break;
+      case SDLK_w:
+        cout<<"W (Up) pressed"<< endl;
+	break;
+       case SDLK_s:
+        cout<<"S (Down)  pressed"<< endl;
+	break;
+
+      
     default:
       break;
+      }
     }
   }
 }
