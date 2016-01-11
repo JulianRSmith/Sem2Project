@@ -1,6 +1,6 @@
 #include "CubeAsset.h"
 
-CubeAsset::CubeAsset(int x, int y) {
+CubeAsset::CubeAsset(float x, float y) {
   // model coordinates, origin at centre.
   GLfloat vertex_buffer [] {
     x+1, -y,-0.5 //0
@@ -38,7 +38,7 @@ CubeAsset::CubeAsset(int x, int y) {
 
   // immediately bind the buffer and transfer the data
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_token);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 24, vertex_buffer, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 36, vertex_buffer, GL_STATIC_DRAW);
 
   glGenBuffers(1, &element_buffer_token);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_token);
@@ -88,11 +88,27 @@ void CubeAsset::Draw(GLuint program_token) {
     exit(-1);
   }
 
+
+
   GLuint position_attrib = glGetAttribLocation(program_token, "position");
+  checkGLError();
+
+  GLuint model_uniform  = glGetUniformLocation(program_token, "model");
   checkGLError();
 
   glUseProgram(program_token);
   checkGLError();
+
+  // Camera Stuffs
+
+      glUseProgram(program_token);
+    checkGLError();
+      glUniformMatrix4fv(model_uniform,1,false,glm::value_ptr(model_matrix));
+
+      rotateX(45.0f);
+
+      //////////////////////
+      
 
   // use the previously transferred buffer as the vertex array.  This way
   // we transfer the buffer once -- at construction -- not on every frame.
@@ -118,6 +134,14 @@ void CubeAsset::Draw(GLuint program_token) {
                  );
 
   checkGLError();
+  
+
 
   glDisableVertexAttribArray(position_attrib);
+}
+
+void  CubeAsset:: rotateX(float angle) {
+   glm::vec3 unit_x_axis(1.0,0,0);
+   glm::mat4 id(model_matrix);
+   model_matrix = glm::rotate(id, 45.0f, unit_x_axis );
 }

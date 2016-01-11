@@ -13,6 +13,7 @@ using namespace std;
 
 #include "common.h"
 #include "GameWorld.h"
+#include "CubeAsset.h"
 
 
 /*
@@ -165,27 +166,25 @@ int main(int argc, char ** argv) {
 
       break;
 
-
       // STUFF GOES HERE 
-    case SDL_KEYDOWN:
-      switch (event.key.keysym.sym) {
-      case SDLK_q:
-	SDL_Quit();
-	cout<<"Program Closing"<< endl;
-	break;
-      case SDLK_a:
-	cout<<"A (Left)  pressed"<< endl;
-	CubeAsset(-10, 0);
-	break;
-      case SDLK_d:
-	cout<<"D (Right)  pressed"<< endl;
-	break;
-      case SDLK_w:
+      case SDL_KEYDOWN:
+        switch (event.key.keysym.sym) {
+       case SDLK_q:
+      	SDL_Quit();
+      	cout<<"Program Closing"<< endl;
+      	break;
+         case SDLK_a:
+      	cout<<"A (Left)  pressed"<< endl;
+      	break;
+         case SDLK_d:
+      	cout<<"D (Right)  pressed"<< endl;
+      	break;
+        case SDLK_w:
         cout<<"W (Up) pressed"<< endl;
-	break;
-       case SDLK_s:
+      	break;
+        case SDLK_s:
         cout<<"S (Down)  pressed"<< endl;
-	break;
+      	break;
 
       
     default:
