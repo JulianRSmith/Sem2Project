@@ -2,6 +2,8 @@
 
 in vec3 position;
 
+uniform mat4 model;
+
 out vec3 frag_color;
 
 mat4 projection(
@@ -45,7 +47,9 @@ mat4 rotate_x(float theta)
 void main() {
       gl_Position = projection(radians(45.0), 4.0/3.0, -0.1, -1000.0)
                       * translate(0.0, 0.0, -5.0)
-                    //  * rotate_x(radians(45.0))
+		      * model
                       * vec4(position, 1.0f);
 	frag_color = vec3(1.0, 0.0, 1.0); // purple
 }
+
+
