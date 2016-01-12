@@ -176,11 +176,10 @@ int main(int argc, char ** argv) {
       	break;
          case SDLK_a:
       	cout<<"A (Left)  pressed"<< endl;
-	game_world->rotateY(100.0f);
       	break;
-         case SDLK_d:
+         case SDLK_d:s
       	cout<<"D (Right)  pressed"<< endl;
-	game_world->rotateY(-100.0f);
+	//game_world->rotateY(100.0f);
       	break;
         case SDLK_w:
         cout<<"W (Up) pressed"<< endl;

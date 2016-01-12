@@ -39,6 +39,15 @@ void GameWorld::rotateX(float angle) {
    glDrawArrays(GL_TRIANGLES,0,36);
 }
 
+void GameWorld::rotateY(float angle) {
+  std::cout<<"passed : = " <<  angle << std::endl;
+   glm::vec3 unit_y_axis(0,1.0,0);
+   glm::mat4 id(1.0);  
+   model_matrix = glm::rotate(model_matrix , delay *  angle , unit_y_axis );
+   glEnable(GL_DEPTH_TEST);
+   glDrawArrays(GL_TRIANGLES,0,36);
+}
+
 void GameWorld::Draw() {
 
   glUniformMatrix4fv(0,1,GL_FALSE,glm::value_ptr(model_matrix));

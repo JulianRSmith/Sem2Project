@@ -23,6 +23,7 @@ class GameWorld {
    */
   GameWorld(ApplicationMode);
     void rotateX(float);
+    void rotateY(float);
 
   /**
    * Calling Draw() will draw the entire world.
