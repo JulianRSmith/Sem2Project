@@ -1,16 +1,18 @@
 #include "CubeAsset.h"
 
+// GLfloat delay = 10000/60; // in milliseconds
+
 CubeAsset::CubeAsset(float x, float y) {
   // model coordinates, origin at centre.
   GLfloat vertex_buffer [] {
-    x+1, -y,-0.5 //0
-       ,x+1,  y,-0.5 //1
-      ,  x, -y,-0.5 //2
-      , x,  y,-0.5 //3
-       , x+1, -y,0.5 //4
-       , x+1,  y,0.5 //5
-      , x, -y,0.5 //6
-      , x,  y,0.5 //7
+    0.5f+x, -0.5f+y,-0.5f //0
+   ,0.5f+x, 0.5f+y,-0.5f //1
+   ,-0.5f+x,-0.5f+y,-0.5f //2
+   ,-0.5f+x, 0.5f+y,-0.5f //3
+   ,0.5f+x, -0.5f+y,0.5f //4
+   ,0.5f+x, 0.5f+y,0.5f //5
+   ,-0.5f+x, -0.5f+y,0.5f //6
+   ,-0.5f+x,  0.5f+y,0.5f //7
   };
 
   
@@ -99,15 +101,15 @@ void CubeAsset::Draw(GLuint program_token) {
   glUseProgram(program_token);
   checkGLError();
 
-  // Camera Stuffs
+  /** Camera Stuffs
 
       glUseProgram(program_token);
     checkGLError();
-      glUniformMatrix4fv(model_uniform,1,false,glm::value_ptr(model_matrix));
+      glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model_matrix));
+      rotateX(50.0f);
 
-      rotateX(45.0f);
 
-      //////////////////////
+  ////////////////////*/
       
 
   // use the previously transferred buffer as the vertex array.  This way
@@ -140,8 +142,22 @@ void CubeAsset::Draw(GLuint program_token) {
   glDisableVertexAttribArray(position_attrib);
 }
 
+
+/**
 void  CubeAsset:: rotateX(float angle) {
    glm::vec3 unit_x_axis(1.0,0,0);
-   glm::mat4 id(model_matrix);
-   model_matrix = glm::rotate(id, 45.0f, unit_x_axis );
+   glm::mat4 id(1.0);
+   //  model_matrix = glm::rotate(id, angle, unit_x_axis );
+   model_matrix = glm::rotate(model_matrix , delay *  angle , unit_x_axis );
+   glEnable(GL_DEPTH_TEST);
+   glDrawArrays(GL_TRIANGLES,0,36);
 }
+
+
+
+void CubeAsset:: Camera() {
+  glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+  glm::Vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+  glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+}
+*/

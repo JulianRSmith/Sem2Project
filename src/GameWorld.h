@@ -22,6 +22,7 @@ class GameWorld {
    * is preferable (in this case) to having some kind of global state.
    */
   GameWorld(ApplicationMode);
+    void rotateX(float);
 
   /**
    * Calling Draw() will draw the entire world.
@@ -29,5 +30,6 @@ class GameWorld {
   void Draw();
  private:
   std::shared_ptr<GameAssetManager> asset_manager;
+    glm::mat4 model_matrix;
 };
 #endif // GAMEWORLD_H

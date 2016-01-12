@@ -31,16 +31,6 @@ mat4 translate(float x, float y, float z) {
 }
 
 
-mat4 rotate_x(float theta)
-{
-    return mat4(
-        vec4(1.0, 0.0, 0.0, 0.0),
-        vec4(0.0, cos(theta), sin(theta), 0.0),
-        vec4(0.0, -sin(theta), cos(theta), 0.0),
-        vec4(0.0, 0.0, 0.0, 1.0)
-    );
-}
-
 
 
 

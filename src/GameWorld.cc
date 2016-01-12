@@ -1,5 +1,7 @@
 #include "GameWorld.h"
 
+GLfloat delay = 10000/60; // in milliseconds
+
 GameWorld::GameWorld (ApplicationMode mode) {
   int pointA,pointB;
   int worldSpace = 11;
@@ -27,6 +29,20 @@ GameWorld::GameWorld (ApplicationMode mode) {
   }
 }
 
+
+void GameWorld::rotateX(float angle) {
+  std::cout<<"passed : = " <<  angle << std::endl;
+   glm::vec3 unit_x_axis(1.0,0,0);
+   glm::mat4 id(1.0);  
+   model_matrix = glm::rotate(model_matrix , delay *  angle , unit_x_axis );
+   glEnable(GL_DEPTH_TEST);
+   glDrawArrays(GL_TRIANGLES,0,36);
+}
+
 void GameWorld::Draw() {
-  asset_manager->Draw();
+
+  glUniformMatrix4fv(0,1,GL_FALSE,glm::value_ptr(model_matrix));
+
+ asset_manager->Draw();
+ 
 }

@@ -141,6 +141,7 @@ ApplicationMode ParseOptions (int argc, char ** argv) {
   return TRANSFORM;
 }
 
+
 int main(int argc, char ** argv) {
   Uint32 delay = 1000/60; // in milliseconds
 
@@ -181,9 +182,11 @@ int main(int argc, char ** argv) {
       	break;
         case SDLK_w:
         cout<<"W (Up) pressed"<< endl;
+        game_world->rotateX(100.0f);
       	break;
         case SDLK_s:
         cout<<"S (Down)  pressed"<< endl;
+	game_world->rotateX(-100.0f);
       	break;
 
       

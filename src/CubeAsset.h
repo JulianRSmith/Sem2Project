@@ -15,6 +15,8 @@ class CubeAsset : public GameAsset {
   ~CubeAsset();
   virtual void Draw(GLuint);
   void rotateX(float);
+  GLuint program_token;
+  GLuint model_uniform = glGetUniformLocation(CubeAsset::program_token, "model");
 
  private:
   GLuint element_buffer_length;
