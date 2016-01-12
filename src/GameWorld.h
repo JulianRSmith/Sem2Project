@@ -22,8 +22,16 @@ class GameWorld {
    * is preferable (in this case) to having some kind of global state.
    */
   GameWorld(ApplicationMode);
+
+      /////////////////////////////////////////////////////////////////////
+      /// ROTATE METHODS //////////////////////////////////////////////////
+      /// Allows Main.cc to access the methods in GameWorld.cc ////////////
+      /////////////////////////////////////////////////////////////////////
+  
     void rotateX(float);
     void rotateY(float);
+    void moveZ(float);
+    void moveUp(float);
 
   /**
    * Calling Draw() will draw the entire world.

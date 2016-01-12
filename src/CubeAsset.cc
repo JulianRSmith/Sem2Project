@@ -1,6 +1,11 @@
 #include "CubeAsset.h"
 
-// GLfloat delay = 10000/60; // in milliseconds
+      /////////////////////////////////////////////////////////////////////
+      /// CUBE COORDINATES ////////////////////////////////////////////////
+      /// Collection of code which tells the system where to place each ///
+      /// corner of the triangle in 3D space, e.g ( X axis, Y axis, Z /////
+      /// axis) ///////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////
 
 CubeAsset::CubeAsset(float x, float y) {
   // model coordinates, origin at centre.
@@ -14,6 +19,13 @@ CubeAsset::CubeAsset(float x, float y) {
    ,-0.5f+x, -0.5f+y,0.5f //6
    ,-0.5f+x,  0.5f+y,0.5f //7
   };
+
+      /////////////////////////////////////////////////////////////////////
+      /// CUBE BUFFER //// ////////////////////////////////////////////////
+      /// Similar in structure to the cube coordinates, here the numbers //
+      /// represent each corner of the cube. In the case of a cube there //
+      /// are 8 in total, but the range here is 0 to 7 ////////////////////
+      /////////////////////////////////////////////////////////////////////
 
   
   element_buffer_length = 36;
@@ -91,6 +103,13 @@ void CubeAsset::Draw(GLuint program_token) {
   }
 
 
+      ////////////////////////////////////////////////////////////////////
+      // GET GL LOCATIONS / //////////////////////////////////////////////
+      // Creates new GLuint variables which returns an integer that //////
+      // represents the location of a specific unifrom & attribute ///////
+      // variables within a program object ///////////////////////////////
+      ////////////////////////////////////////////////////////////////////
+
 
   GLuint position_attrib = glGetAttribLocation(program_token, "position");
   checkGLError();
@@ -101,15 +120,6 @@ void CubeAsset::Draw(GLuint program_token) {
   glUseProgram(program_token);
   checkGLError();
 
-  /** Camera Stuffs
-
-      glUseProgram(program_token);
-    checkGLError();
-      glUniformMatrix4fv(model_uniform,1,GL_FALSE,glm::value_ptr(model_matrix));
-      rotateX(50.0f);
-
-
-  ////////////////////*/
       
 
   // use the previously transferred buffer as the vertex array.  This way
@@ -141,23 +151,3 @@ void CubeAsset::Draw(GLuint program_token) {
 
   glDisableVertexAttribArray(position_attrib);
 }
-
-
-/**
-void  CubeAsset:: rotateX(float angle) {
-   glm::vec3 unit_x_axis(1.0,0,0);
-   glm::mat4 id(1.0);
-   //  model_matrix = glm::rotate(id, angle, unit_x_axis );
-   model_matrix = glm::rotate(model_matrix , delay *  angle , unit_x_axis );
-   glEnable(GL_DEPTH_TEST);
-   glDrawArrays(GL_TRIANGLES,0,36);
-}
-
-
-
-void CubeAsset:: Camera() {
-  glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-  glm::Vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-  glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-}
-*/

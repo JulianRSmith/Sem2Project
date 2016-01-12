@@ -14,7 +14,6 @@ class CubeAsset : public GameAsset {
   CubeAsset(float x, float y);
   ~CubeAsset();
   virtual void Draw(GLuint);
-  void rotateX(float);
   GLuint program_token;
   GLuint model_uniform = glGetUniformLocation(CubeAsset::program_token, "model");
 

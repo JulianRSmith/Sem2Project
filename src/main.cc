@@ -5,6 +5,13 @@
 #include <iostream>
 #include <memory>
 
+      /////////////////////////////////////////////////////////////////////
+      /// NAMESPACE STD  //////////////////////////////////////////////////
+      /// By using namespace std it replaces the need to add "std::" //////
+      /// before certain methods. For example the most common example /////
+      /// is when outputing to console you would use "std::count" /////////
+      /////////////////////////////////////////////////////////////////////
+
 using namespace std;
 
 #include <boost/program_options.hpp>
@@ -167,28 +174,46 @@ int main(int argc, char ** argv) {
 
       break;
 
-      // STUFF GOES HERE 
+      /////////////////////////////////////////////////////////////////////
+      /// SDL KEYBOARD INPUT //////////////////////////////////////////////
+      /// Each switch statement prints which key has been pressed to the //
+      /// console. It then calls the appropriate method in the GameWorld //
+      /// classes with the value on how much the object should rotate /////
+      /////////////////////////////////////////////////////////////////////
+      
       case SDL_KEYDOWN:
         switch (event.key.keysym.sym) {
        case SDLK_q:
       	SDL_Quit();
-      	cout<<"Program Closing"<< endl;
+      	cout<<"Q Pressed | Program Closing"<< endl;
       	break;
          case SDLK_a:
       	cout<<"A (Left)  pressed"<< endl;
-	game_world->rotateY(100.0f);
+	game_world->rotateY(1.0f);
       	break;
          case SDLK_d:
       	cout<<"D (Right)  pressed"<< endl;
-	game_world->rotateY(-100.0f);
+	game_world->rotateY(-1.0f);
       	break;
         case SDLK_w:
         cout<<"W (Up) pressed"<< endl;
-        game_world->rotateX(100.0f);
+        game_world->rotateX(1.0f);
       	break;
         case SDLK_s:
         cout<<"S (Down)  pressed"<< endl;
-	game_world->rotateX(-100.0f);
+	game_world->rotateX(-1.0f);
+      	break;
+	case SDLK_e:
+        cout<<"E (Spin)  pressed"<< endl;
+	game_world->moveZ(-1.0f);
+      	break;
+	case SDLK_r:
+        cout<<"R (Spin)  pressed"<< endl;
+	game_world->moveZ(1.0f);
+      	break;
+	case SDLK_t:
+        cout<<"T (SpinUp)  pressed"<< endl;
+	game_world->moveUp(-1.0f);
       	break;
 
       
