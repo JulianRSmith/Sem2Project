@@ -21,24 +21,16 @@ class GameWorld {
    * in from the user.  Threading the state through the various function calls
    * is preferable (in this case) to having some kind of global state.
    */
-  GameWorld(ApplicationMode);
+ GameWorld(ApplicationMode);
 
-      /////////////////////////////////////////////////////////////////////
-      /// ROTATE METHODS //////////////////////////////////////////////////
-      /// Allows Main.cc to access the methods in GameWorld.cc ////////////
-      /////////////////////////////////////////////////////////////////////
-  
-    void rotateX(float);
-    void rotateY(float);
-    void moveZ(float);
-    void moveUp(float);
-
-  /**
-   * Calling Draw() will draw the entire world.
-   */
+  ///
+  ///Calling Draw() will draw the entire world.
+  ///
   void Draw();
+
+  void UpdateCameraPosition(Input, int mouseX, int mouseY);
+
  private:
   std::shared_ptr<GameAssetManager> asset_manager;
-    glm::mat4 model_matrix;
 };
 #endif // GAMEWORLD_H

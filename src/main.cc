@@ -56,9 +56,9 @@ void Draw(const std::shared_ptr<SDL_Window> window, const std::shared_ptr<GameWo
 }
 
 std::shared_ptr<SDL_Window> InitWorld() {
-  Uint32 width = 640;
-  Uint32 height = 480;
-  SDL_Window * _window;
+  Uint32 width = 1920;
+  Uint32 height = 1080;  
+SDL_Window * _window;
   std::shared_ptr<SDL_Window> window;
 
   // Glew will later ensure that OpenGL 3 *is* supported
@@ -86,7 +86,7 @@ std::shared_ptr<SDL_Window> InitWorld() {
                              , SDL_WINDOWPOS_CENTERED
                              , width
                              , height
-                             , SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                             , SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
   if (!_window) {
     std::cout << "Failed to create SDL window: " << SDL_GetError() << std::endl;
     return nullptr;
@@ -150,11 +150,17 @@ ApplicationMode ParseOptions (int argc, char ** argv) {
 
 
 int main(int argc, char ** argv) {
-  Uint32 delay = 1000/60; // in milliseconds
+  Uint32 delay = 1000/30; // in milliseconds
 
   auto mode = ParseOptions(argc, argv);
   auto window = InitWorld();
   auto game_world = std::make_shared<GameWorld>(mode);
+
+  int mouseX;
+  int mouseY;
+  const Uint8 *keyboard_state;
+  Input input_direction = NILL;
+  SDL_SetRelativeMouseMode(SDL_TRUE);
   if(!window) {
     SDL_Quit();
   }
@@ -170,56 +176,33 @@ int main(int argc, char ** argv) {
       SDL_Quit();
       break;
     case SDL_USEREVENT:
+    {
+      SDL_GetRelativeMouseState(&mouseX, &mouseY);
+
+      keyboard_state = SDL_GetKeyboardState(NULL);
+      if(keyboard_state[SDL_SCANCODE_A]){
+        input_direction = LEFT;
+   	}else if(keyboard_state[SDL_SCANCODE_S]){
+   	  input_direction = DOWN;
+    	}else if(keyboard_state[SDL_SCANCODE_D]){
+    	  input_direction = RIGHT;
+    	}else if(keyboard_state[SDL_SCANCODE_W]){
+    	  input_direction = UP;
+        }else if(keyboard_state[SDL_SCANCODE_SPACE]){
+          input_direction = ASCEND;
+    	}else if(keyboard_state[SDL_SCANCODE_ESCAPE]){
+    	  SDL_Quit();
+    	}else{
+    	  input_direction = NILL;
+    	}
+
+      game_world->UpdateCameraPosition(input_direction, mouseX, mouseY);
       Draw(window, game_world);
 
       break;
-
-      /////////////////////////////////////////////////////////////////////
-      /// SDL KEYBOARD INPUT //////////////////////////////////////////////
-      /// Each switch statement prints which key has been pressed to the //
-      /// console. It then calls the appropriate method in the GameWorld //
-      /// classes with the value on how much the object should rotate /////
-      /////////////////////////////////////////////////////////////////////
-      
-      case SDL_KEYDOWN:
-        switch (event.key.keysym.sym) {
-       case SDLK_q:
-      	SDL_Quit();
-      	cout<<"Q Pressed | Program Closing"<< endl;
-      	break;
-         case SDLK_a:
-      	cout<<"A (Left)  pressed"<< endl;
-	game_world->rotateY(1.0f);
-      	break;
-         case SDLK_d:
-      	cout<<"D (Right)  pressed"<< endl;
-	game_world->rotateY(-1.0f);
-      	break;
-        case SDLK_w:
-        cout<<"W (Up) pressed"<< endl;
-        game_world->rotateX(1.0f);
-      	break;
-        case SDLK_s:
-        cout<<"S (Down)  pressed"<< endl;
-	game_world->rotateX(-1.0f);
-      	break;
-	case SDLK_e:
-        cout<<"E (Spin)  pressed"<< endl;
-	game_world->moveZ(-1.0f);
-      	break;
-	case SDLK_r:
-        cout<<"R (Spin)  pressed"<< endl;
-	game_world->moveZ(1.0f);
-      	break;
-	case SDLK_t:
-        cout<<"T (SpinUp)  pressed"<< endl;
-	game_world->moveUp(-1.0f);
-      	break;
-
-      
     default:
       break;
-      }
     }
   }
+}
 }

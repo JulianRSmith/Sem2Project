@@ -1,62 +1,75 @@
 #include "CubeAsset.h"
 
-      /////////////////////////////////////////////////////////////////////
-      /// CUBE COORDINATES ////////////////////////////////////////////////
-      /// Collection of code which tells the system where to place each ///
-      /// corner of the triangle in 3D space, e.g ( X axis, Y axis, Z /////
-      /// axis) ///////////////////////////////////////////////////////////
-      /////////////////////////////////////////////////////////////////////
+CubeAsset::CubeAsset(GLfloat x, GLfloat y, GLfloat z) {
 
-CubeAsset::CubeAsset(float x, float y) {
-  // model coordinates, origin at centre.
+///
+///Cube Creation
+///models coordinates, origin dependant on xyz variables.
+///vertex buffer models coordinates, for the triangles.
+///colour buffer models the colour of the object triangles.
+///element buffer creates the cube using 12 triangles.
+///
+
   GLfloat vertex_buffer [] {
-    0.5f+x, -0.5f+y,-0.5f //0
-   ,0.5f+x, 0.5f+y,-0.5f //1
-   ,-0.5f+x,-0.5f+y,-0.5f //2
-   ,-0.5f+x, 0.5f+y,-0.5f //3
-   ,0.5f+x, -0.5f+y,0.5f //4
-   ,0.5f+x, 0.5f+y,0.5f //5
-   ,-0.5f+x, -0.5f+y,0.5f //6
-   ,-0.5f+x,  0.5f+y,0.5f //7
+      -0.5f + x, -0.5f + y, -0.5f + z   //0
+    , -0.5f + x,  0.5f + y, -0.5f + z   //1
+    ,  0.5f + x, -0.5f + y, -0.5f + z   //2
+    ,  0.5f + x,  0.5f + y, -0.5f + z   //3
+    , -0.5f + x, -0.5f + y,  0.5f + z   //5
+    , -0.5f + x,  0.5f + y,  0.5f + z   //4
+    ,  0.5f + x, -0.5f + y,  0.5f + z   //6
+    ,  0.5f + x,  0.5f + y,  0.5f + z   //7
   };
+  vertex_buffer_length = sizeof(vertex_buffer);
 
-      /////////////////////////////////////////////////////////////////////
-      /// CUBE BUFFER //// ////////////////////////////////////////////////
-      /// Similar in structure to the cube coordinates, here the numbers //
-      /// represent each corner of the cube. In the case of a cube there //
-      /// are 8 in total, but the range here is 0 to 7 ////////////////////
-      /////////////////////////////////////////////////////////////////////
+  GLfloat color_buffer [] {
+      0.000f, 1.000f, 0.000f //0
+    , 0.000f, 1.000f, 0.000f //1
+    , 0.000f, 1.000f, 0.000f //2
+    , 0.000f, 1.000f, 0.000f //3
+    , 0.000f, 1.000f, 0.000f //4
+    , 0.000f, 1.000f, 0.000f //5
+    , 0.000f, 1.000f, 0.000f //6
+    , 0.000f, 1.000f, 0.000f //7
+  };
+  color_buffer_length = sizeof(color_buffer);
 
-  
-  element_buffer_length = 36;
   GLuint element_buffer []  {
-    0, 1, 2
-    ,1 , 3, 2
-    ,1 , 5, 7
-    ,1 , 7, 3
-    ,3 , 6, 2
-    ,3 , 7, 6
-    ,7 , 4, 6
-    ,7 , 5, 4
-    ,5 , 1, 0
-    ,5 , 4, 0
-    ,6 , 4, 0
-    ,6 , 2, 0
+      0, 1, 2 
+    , 1, 3, 2  
+    , 4, 5, 6 
+    , 5, 7, 6  
+    , 1, 5, 3 
+    , 5, 7, 3 
+    , 0, 1, 4 
+    , 1, 5, 4  
+    , 2, 3, 6  
+    , 3, 7, 6  
+    , 0, 4, 2  
+    , 4, 2, 6     
   };
+  element_buffer_length = sizeof(element_buffer);
 
-  // Transfer buffers to the GPU
-  //
+  ///
+  ///Buffer Implementation 
+  ///Transfer buffers to the GPU
+  ///
 
-  // create buffer
+  // create vertex buffer
   glGenBuffers(1, &vertex_buffer_token);
-
   // immediately bind the buffer and transfer the data
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_token);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 36, vertex_buffer, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertex_buffer_length, vertex_buffer, GL_STATIC_DRAW);
 
+  // create color buffer
+  glGenBuffers(1, &color_buffer_token);
+  // immediately bind the buffer and transfer the data
+  glBindBuffer(GL_ARRAY_BUFFER, color_buffer_token);
+  glBufferData(GL_ARRAY_BUFFER, color_buffer_length, color_buffer, GL_STATIC_DRAW);
+  
   glGenBuffers(1, &element_buffer_token);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_token);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * element_buffer_length, element_buffer, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, element_buffer_length, element_buffer, GL_STATIC_DRAW);
 }
 
 CubeAsset::~CubeAsset() {
