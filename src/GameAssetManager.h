@@ -42,6 +42,14 @@ class GameAssetManager {
   GLuint program_token;
 
     Camera camera;
+  glm::vec3 bounding_box1_max;
+  glm::vec3 bounding_box1_min;
+  glm::vec3 bounding_box2_max;
+  glm::vec3 bounding_box2_min;
+
+  glm::vec3 bounding_box1_position;
+  glm::vec3 bounding_box2_position;
+
 
   GLuint translateMatrix_link;
   GLuint viewMatrix_link;

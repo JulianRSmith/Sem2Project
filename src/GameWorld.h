@@ -28,6 +28,8 @@ class GameWorld {
   ///
   void Draw();
 
+  void moveX();
+
   void UpdateCameraPosition(Input, int mouseX, int mouseY);
 
  private:

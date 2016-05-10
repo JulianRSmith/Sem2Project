@@ -1,84 +1,61 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////// CUBEASSET.CC /////////////////////////////////////
-///////////////////////////////////////////jrs38//////////////////////////////////////////
+///////////////////////////////////// PYRAMIDASSET.CC ////////////////////////////////////
+///////////////////////////////////////////lr227//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
-#include "CubeAsset.h"
+#include "PyramidAsset.h"
 
-CubeAsset::CubeAsset(glm::vec3 p,int type, float scale, glm::vec3 rotation, glm::vec3 speed) : GameAsset(p , type, scale, rotation, speed) {
+      /////////////////////////////////////////////////////////////////////
+      /// PYRAMID COORDINATES /////////////////////////////////////////////
+      /// Collection of code which tells the system where to place each ///
+      /// corner of the triangle in 3D space, e.g ( X axis, Y axis, Z /////
+      /// axis) ///////////////////////////////////////////////////////////
+      /////////////////////////////////////////////////////////////////////
 
- 
-///
-///Cube Creation
-///models coordinates, origin dependant on xyz variables.
-///vertex buffer models coordinates, for the triangles.
-///colour buffer models the colour of the object triangles.
-///element buffer creates the cube using 12 triangles.
-///
-
+PyramidAsset::PyramidAsset(glm::vec3 p,int type, float scale, glm::vec3 rotation, glm::vec3 speed) : GameAsset(p , type, scale, rotation, speed) {
+  // model coordinates, origin at centre.
   GLfloat vertex_buffer [] {
-      -0.5f + position.x, -0.5f + position.y, -0.5f + position.z   //0
-    , -0.5f + position.x,  0.5f + position.y, -0.5f + position.z   //1
-    ,  0.5f + position.x, -0.5f + position.y, -0.5f + position.z   //2
-    ,  0.5f + position.x,  0.5f + position.y, -0.5f + position.z   //3
-    , -0.5f + position.x, -0.5f + position.y,  0.5f + position.z   //5
-    , -0.5f + position.x,  0.5f + position.y,  0.5f + position.z   //4
-    ,  0.5f + position.x, -0.5f + position.y,  0.5f + position.z   //6
-    ,  0.5f + position.x,  0.5f + position.y,  0.5f + position.z   //7
+    -0.5f + position.x, -0.5f + position.y, -0.5f + position.z //0
+   ,-0.5f + position.x,  0.5f + position.y, -0.5f + position.z //1
+   ,0.5f + position.x,-0.5f + position.y,-0.5f + position.z //2
+   ,0.5f + position.x, 0.5f + position.y,-0.5f + position.z //3
+   ,0.0f + position.x, 0.0f + position.y,0.5f + position.z //4
   };
-  vertex_buffer_length = sizeof(vertex_buffer);
 
-  GLfloat color_buffer [] {
-      0.000f, 1.000f, 0.000f //0
-    , 0.000f, 1.000f, 0.000f //1
-    , 0.000f, 1.000f, 0.000f //2
-    , 0.000f, 1.000f, 0.000f //3
-    , 0.000f, 1.000f, 0.000f //4
-    , 0.000f, 1.000f, 0.000f //5
-    , 0.000f, 1.000f, 0.000f //6
-    , 0.000f, 1.000f, 0.000f //7
-  };
-  color_buffer_length = sizeof(color_buffer);
+      /////////////////////////////////////////////////////////////////
+      /// PYRAMID BUFFER //// /////////////////////////////////////////
+      /// Here the numbers represent each corner //////////////////////
+      /// of the pyramid. In the case of a pyramid there //////////////
+      /// are 5 in total, but the range here is 0 to 4 ////////////////
+      /////////////////////////////////////////////////////////////////
 
+  
+  element_buffer_length = 18;
   GLuint element_buffer []  {
-      0, 1, 2 
-    , 1, 3, 2  
-    , 4, 5, 6 
-    , 5, 7, 6  
-    , 1, 5, 3 
-    , 5, 7, 3 
-    , 0, 1, 4 
-    , 1, 5, 4  
-    , 2, 3, 6  
-    , 3, 7, 6  
-    , 0, 4, 2  
-    , 4, 2, 6     
+       0, 1, 3
+       ,0, 2, 3
+       ,0, 1, 4
+       ,0, 2, 4
+       ,1, 3, 4
+        ,2, 3, 4
   };
-  element_buffer_length = sizeof(element_buffer);
 
-  ///
-  ///Buffer Implementation 
-  ///Transfer buffers to the GPU
-  ///
+  // Transfer buffers to the GPU
+  //
 
-  // create vertex buffer
+  // create buffer
   glGenBuffers(1, &vertex_buffer_token);
+
   // immediately bind the buffer and transfer the data
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_token);
-  glBufferData(GL_ARRAY_BUFFER, vertex_buffer_length, vertex_buffer, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, vertex_buffer, GL_STATIC_DRAW);
 
-  // create color buffer
-  glGenBuffers(1, &color_buffer_token);
-  // immediately bind the buffer and transfer the data
-  glBindBuffer(GL_ARRAY_BUFFER, color_buffer_token);
-  glBufferData(GL_ARRAY_BUFFER, color_buffer_length, color_buffer, GL_STATIC_DRAW);
-  
   glGenBuffers(1, &element_buffer_token);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_token);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, element_buffer_length, element_buffer, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * element_buffer_length, element_buffer, GL_STATIC_DRAW);
 }
 
-CubeAsset::~CubeAsset() {
+PyramidAsset::~PyramidAsset() {
 }
 
 #ifdef DEBUG
@@ -88,20 +65,19 @@ CubeAsset::~CubeAsset() {
 #define checkGLError()
 #endif
 
-void checkError(std::string file, int line) {
+
+/*void checkError(std::string file, int line) {
   GLenum gl_error = glGetError();
   if(GL_NO_ERROR != gl_error) {
     std::cerr << "GL error in " << file << " at line " << line << " error: " << gl_error << std::endl;
     exit(-1);
   }
-}
+  }*/
 
-
-
-void CubeAsset::Draw(GLuint program_token) {
+void PyramidAsset::Draw(GLuint program_token) {
   
   if(!glIsProgram(program_token)) {
-    //std::cerr << "Drawing Cube with invalid program" << std::endl;
+    std::cerr << "Drawing Pyramid with invalid program" << std::endl;
     return;
   }
   

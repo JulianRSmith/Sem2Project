@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////// MAIN.CC ///////////////////////////////////////
+////////////////////////////////////////////jrs38/////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 #define GLEW_STATIC // Easier debugging
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -80,7 +85,9 @@ SDL_Window * _window;
   // When we close a window quit the SDL application
   atexit(SDL_Quit);
 
-  // Create a new window with an OpenGL surface
+//////////////////////////////////////////////////////////////////////////////////////////
+//Create a new full screen window with an OpenGL surface  ////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////// 
   _window = SDL_CreateWindow("Shader Example"
                              , SDL_WINDOWPOS_CENTERED
                              , SDL_WINDOWPOS_CENTERED
@@ -150,7 +157,7 @@ ApplicationMode ParseOptions (int argc, char ** argv) {
 
 
 int main(int argc, char ** argv) {
-  Uint32 delay = 1000/30; // in milliseconds
+  Uint32 delay = 1000/60; // in milliseconds
 
   auto mode = ParseOptions(argc, argv);
   auto window = InitWorld();
@@ -160,7 +167,6 @@ int main(int argc, char ** argv) {
   int mouseY;
   const Uint8 *keyboard_state;
   Input input_direction = NILL;
-  SDL_SetRelativeMouseMode(SDL_TRUE);
   if(!window) {
     SDL_Quit();
   }
@@ -168,7 +174,11 @@ int main(int argc, char ** argv) {
   // Call the function "tick" every delay milliseconds
   SDL_AddTimer(delay, tick, NULL);
 
-  // Add the main event loop
+  SDL_SetRelativeMouseMode(SDL_TRUE);
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//Detecting User Keyboard & Mouse Movement  //////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
   SDL_Event event;
   while (SDL_WaitEvent(&event)) {
     switch (event.type) {
@@ -180,17 +190,16 @@ int main(int argc, char ** argv) {
       SDL_GetRelativeMouseState(&mouseX, &mouseY);
 
       keyboard_state = SDL_GetKeyboardState(NULL);
-      if(keyboard_state[SDL_SCANCODE_A]){
-        input_direction = LEFT;
-   	}else if(keyboard_state[SDL_SCANCODE_S]){
-   	  input_direction = DOWN;
+      if(keyboard_state[SDL_SCANCODE_W]){
+        input_direction = UP;
+   	}else if(keyboard_state[SDL_SCANCODE_A]){
+   	  input_direction = LEFT;
+    	}else if(keyboard_state[SDL_SCANCODE_S]){
+    	  input_direction = DOWN;
     	}else if(keyboard_state[SDL_SCANCODE_D]){
     	  input_direction = RIGHT;
-    	}else if(keyboard_state[SDL_SCANCODE_W]){
-    	  input_direction = UP;
-        }else if(keyboard_state[SDL_SCANCODE_SPACE]){
-          input_direction = ASCEND;
     	}else if(keyboard_state[SDL_SCANCODE_ESCAPE]){
+	  cout<<"Program Sucessfully Closed"<<endl;
     	  SDL_Quit();
     	}else{
     	  input_direction = NILL;
